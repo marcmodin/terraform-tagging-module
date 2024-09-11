@@ -1,3 +1,13 @@
+terraform {
+  required_version = ">= 1.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 5.32"
+    }
+  }
+}
+
 module "common_tags" {
   source = "../"
 
@@ -21,15 +31,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "example" {
-  bucket = "${module.common_tags.resource_id}-bucket"
+  bucket = module.common_tags.s3_resource_id
 
   tags = merge(module.common_tags.tags, module.common_tags.additional_tags)
-}
-
-output "bucket" {
-  value = aws_s3_bucket.example.id
-}
-
-output "bucket_id" {
-  value = module.common_tags.s3_resource_id
 }

@@ -8,6 +8,7 @@ repos:
           - "--args=--lockfile=false"
       - id: terraform_tflint
         args:
+          - "--args=--call-module-type=none"
           - "--args=--only=terraform_deprecated_interpolation"
           - "--args=--only=terraform_deprecated_index"
           - "--args=--only=terraform_unused_declarations"

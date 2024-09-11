@@ -16,4 +16,6 @@ jobs:
       - name: Run Pre-Commit Checks
         uses: clowdhaus/terraform-composite-actions/pre-commit@v1.9.0
         with:
+          # Configure default software
+          terraform-version: 1.7.0
           args: "--all-files --color always --show-diff-on-failure"
