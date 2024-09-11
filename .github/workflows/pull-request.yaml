@@ -7,16 +7,15 @@ on:
 
 jobs:
   pull_request_job:
-    name: Run on Pull Request
+    name: Run Checks on Pull Request
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
-      - name: Render terraform docs and push changes back to PR
-        uses: terraform-docs/gh-actions@main
+      - name: Run Pre-Commit Checks
+        uses: clowdhaus/terraform-composite-actions/pre-commit@v1.9.0
         with:
-          working-dir: .
-          output-file: README.md
-          output-method: inject
-          git-push: "true"
+          # Configure default software
+          terraform-version: 1.7.0
+          args: "--all-files --color always --show-diff-on-failure"

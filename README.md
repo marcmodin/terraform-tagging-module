@@ -15,4 +15,4 @@ This Terraform module dynamically generates standardized tags for cloud resource
 To use this module in your Terraform configuration, include the following code block and provide the necessary inputs.
 
 <!-- BEGIN_TF_DOCS -->
-<!-- END_TF_DOCS -->  
+<!-- END_TF_DOCS -->
