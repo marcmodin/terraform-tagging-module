@@ -8,6 +8,35 @@ This Terraform module dynamically generates standardized tags for cloud resource
 - **Standardized Tags**: Provides a consistent tagging structure across all resources.
 - **Easy Integration**: Can be easily integrated with any Terraform configuration to apply tags to resources.
 
+## How to Use
+
+  To use this module in your Terraform configuration, grab the following example code block and provide the necessary inputs to test it out.
+
+  ```hcl
+    module "common_tags" {
+      source      = "git@github.com:marcmodin/sample-terraform-aws-tags-module.git?ref=v0.1.0"
+      environment = "production"
+      cost_center = "b-456"
+      department  = "Finance"
+      project_id  = "proj-202"
+      region      = "eu-north-1"
+      hash_id     = true
+
+      additional_tags = {
+        "application" = "annual-reporting-service"
+      }
+    }
+
+    provider "aws" {
+      region = "eu-north-1"
+      default_tags {
+        tags = module.common_tags.tags
+      }
+    }
+  ```
+
+---
+
 <!-- BEGIN_TF_DOCS -->
 <!-- END_TF_DOCS -->
 

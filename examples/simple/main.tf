@@ -1,6 +1,5 @@
 module "common_tags" {
-  source = "github.com/marcmodin/sample-terraform-aws-tags-module.git?depth=1&ref=v0.1.0"
-
+  source      = "../../"
   environment = "production"
   cost_center = "b-456"
   department  = "Finance"

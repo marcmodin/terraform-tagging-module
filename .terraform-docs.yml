@@ -5,15 +5,7 @@ recursive:
   path: modules
 
 content: |-
-  ## How to Use
-
-  To use this module in your Terraform configuration, grab the following example code block and provide the necessary inputs to test it out.
-
-  ```hcl {{ include "example//main.tf" }}
-  ```
-  ---
   {{ .Requirements }}
-  {{ .Resources }}
   {{ .Inputs }}
   {{ .Outputs  }}
 
