@@ -1,4 +1,4 @@
-# Terraform Tag Generator Module
+# Sample Terraform Tag Generator Module
 
 This Terraform module dynamically generates standardized tags for cloud resources based on user inputs. The module ensures that tag values conform to predefined valid values, enhancing consistency and governance across resources.
 
