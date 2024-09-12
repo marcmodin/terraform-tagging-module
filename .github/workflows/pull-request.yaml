@@ -6,7 +6,7 @@ on:
       - main # Or any other branch where you want the job to run
 
 jobs:
-  pull_request_job:
+  pre-commit:
     name: Run Checks on Pull Request
     runs-on: ubuntu-latest
 
@@ -19,3 +19,20 @@ jobs:
           # Configure default software
           terraform-version: 1.7.0
           args: "--all-files --color always --show-diff-on-failure"
+
+  generate-docs:
+    needs: [pre-commit]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - uses: terraform-docs/gh-actions@main
+        with:
+          working-dir: .
+          config-file: .terraform-docs.yml
+          git-push: "true"
+          git-commit-message: "docs(terraform-docs): automated action"
