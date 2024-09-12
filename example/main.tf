@@ -1,15 +1,5 @@
-terraform {
-  required_version = ">= 1.0"
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = ">= 5.32"
-    }
-  }
-}
-
 module "common_tags" {
-  source = "../"
+  source = "github.com/marcmodin/sample-terraform-aws-tags-module.git?depth=1&ref=v0.1.0"
 
   environment = "production"
   cost_center = "b-456"

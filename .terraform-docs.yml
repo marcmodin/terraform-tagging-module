@@ -1,0 +1,26 @@
+formatter: "markdown table"
+
+recursive:
+  enabled: false
+  path: modules
+
+content: |-
+  ## How to Use
+
+  To use this module in your Terraform configuration, grab the following example code block and provide the necessary inputs to test it out.
+
+  ```hcl {{ include "example//main.tf" }}
+  ```
+  ---
+  {{ .Requirements }}
+  {{ .Resources }}
+  {{ .Inputs }}
+  {{ .Outputs  }}
+
+output:
+  file: "README.md"
+  mode: inject
+  template: |-
+    <!-- BEGIN_TF_DOCS -->
+    {{ .Content }}
+    <!-- END_TF_DOCS -->
