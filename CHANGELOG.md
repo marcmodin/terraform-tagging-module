@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://github.com/marcmodin/terraform-tagging-module/compare/v0.1.0...v1.0.0) (2024-11-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* adding context functionality requires new variables and what values are outputted
+
+### Features
+
+* refactor codebase to allow for context nesting ([#5](https://github.com/marcmodin/terraform-tagging-module/issues/5)) ([2f92943](https://github.com/marcmodin/terraform-tagging-module/commit/2f9294342af7991e80880122c7ee86de5b3181eb))
+
 ## 0.1.0 (2024-09-12)
 
 
