@@ -18,6 +18,9 @@ repos:
           - "--args=--only=terraform_typed_variables"
           - "--args=--only=terraform_naming_convention"
           - "--args=--only=terraform_standard_module_structure"
+      - id: terraform_docs
+        args:
+          - --args=--config=.terraform-docs.yml
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
