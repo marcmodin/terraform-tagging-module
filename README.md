@@ -1,11 +1,12 @@
 # Sample Terraform Tag Generator Module
 
-This Terraform module dynamically generates standardized tags for cloud resources based on user inputs. The module ensures that tag values conform to predefined valid values, enhancing consistency and governance across resources.
+This Terraform module dynamically generates standardized tags for cloud resources based on user inputs. The module ensures that tag values conform to predefined valid values, enhancing consistency and governance across resources. Inspired by Cloudposse's [terraform-null-label](https://github.com/cloudposse/terraform-null-label) module.
 
 ## Features
 
-- **Input Validation**: Ensures only valid values for tags such as `environment`, `cost-center`, `department`, and `project-id` are accepted.
+- **Input Validation**: Ensures only valid values for tags such as `environment`, `cost-center`, and `project-id` are accepted.
 - **Standardized Tags**: Provides a consistent tagging structure across all resources.
+- **Context**: Supports deeply merging values from context. Adding the ability to extend values needed in different parts of your configuration.
 - **Easy Integration**: Can be easily integrated with any Terraform configuration to apply tags to resources.
 
 ## How to Use
@@ -43,6 +44,7 @@ This Terraform module dynamically generates standardized tags for cloud resource
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -54,6 +56,7 @@ This Terraform module dynamically generates standardized tags for cloud resource
 | <a name="input_hash_id"></a> [hash\_id](#input\_hash\_id) | Whether to include a random hash in the resource ID | `bool` | `false` | no |
 | <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The project ID associated with the resource | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | Optional AWS region to include in the resource ID, limited to EU and US regions | `string` | `""` | no |
+
 ## Outputs
 
 | Name | Description |
@@ -87,3 +90,27 @@ Releasing a new version of the module is an automated process. This project uses
 When changes are merged to main release-please will go though the commits and generate a release candidate in the form of a new pull-request.
 
 For more information on how to customize releases further, see [customizing releases](https://github.com/googleapis/release-please/blob/main/docs/customizing.md)
+
+## Terraform Tests
+
+This project uses terraform's built in testing suite [Terraform Test](https://developer.hashicorp.com/terraform/language/tests#tests) to validate that the module produce expected results in scenarios covered.
+
+Initialize the Terraform configuration in the `root` of this module to install modules and any required providers. Any time you add a new provider or module to your configuration or tests, you must run the terraform init command.
+
+```bash
+terraform init
+```
+
+Run terraform test. Terraform authenticates the AWS provider defined in your tests if it exists using your provider credentials the same way it does for your regular configuration.
+
+```bash
+terraform test
+
+tests/default.tftest.hcl... in progress
+  run "simple_plan_validate_module_resource_id"... pass
+  run "simple_plan_validate_module_tags"... pass
+tests/default.tftest.hcl... tearing down
+tests/default.tftest.hcl... pass
+
+Success! 2 passed, 0 failed.
+```
