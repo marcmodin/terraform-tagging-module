@@ -1,10 +1,10 @@
 variable "context" {
   description = "The context to use for the tags"
-  type = any
+  type        = any
 }
 
 variable "tags" {
   description = "The tags to apply to the resources"
-  type    = any
-  default = {}
+  type        = any
+  default     = {}
 }

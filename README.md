@@ -2,6 +2,8 @@
 
 This Terraform module dynamically generates standardized tags for cloud resources based on user inputs. The module ensures that tag values conform to predefined valid values, enhancing consistency and governance across resources. Inspired by Cloudposse's [terraform-null-label](https://github.com/cloudposse/terraform-null-label) module.
 
+Feel free to take this module and make it your own.
+
 ## Features
 
 - **Input Validation**: Ensures only valid values for tags such as `environment`, `cost-center`, and `project-id` are accepted.
@@ -11,30 +13,28 @@ This Terraform module dynamically generates standardized tags for cloud resource
 
 ## How to Use
 
-  To use this module in your Terraform configuration, grab the following example code block and provide the necessary inputs to test it out.
+To use this module in your Terraform configuration, grab the following example code block and provide the necessary inputs to test it out.
 
-  ```hcl
-    module "common_tags" {
-      source      = "git@github.com:marcmodin/sample-terraform-aws-tags-module.git?ref=v0.1.0"
-      environment = "production"
-      cost_center = "b-456"
-      department  = "Finance"
-      project_id  = "proj-202"
-      region      = "eu-north-1"
-      hash_id     = true
+```hcl
+  module "common_tags" {
+    source      = "git@github.com:marcmodin/sample-terraform-aws-tags-module.git?ref=v0.1.0"
+    environment = "prd"
+    cost_center = "sb-456"
+    project     = "proj-202"
+    region      = "eu-north-1"
 
-      additional_tags = {
-        "application" = "annual-reporting-service"
-      }
+    additional_tags = {
+      "application" = "annual-reporting-service"
     }
+  }
 
-    provider "aws" {
-      region = "eu-north-1"
-      default_tags {
-        tags = module.common_tags.tags
-      }
+  provider "aws" {
+    region = "eu-north-1"
+    default_tags {
+      tags = module.common_tags.tags
     }
-  ```
+  }
+```
 
 ---
 
