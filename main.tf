@@ -1,42 +1,56 @@
+####################################################################################################
+# Modules
+####################################################################################################
+
+module "short_region" {
+  source = "./short-region"
+  region = var.region
+}
+
+####################################################################################################
+# Locals
+####################################################################################################
+
 locals {
-  # Map of AWS regions and their short forms
-  region_short_map = {
-    "us-east-1"    = "use1"
-    "us-east-2"    = "use2"
-    "eu-west-1"    = "euw1"
-    "eu-west-2"    = "euw2"
-    "eu-west-3"    = "euw3"
-    "eu-north-1"   = "eun1"
-    "eu-central-1" = "euc1"
-  }
-
-  # Fetch the short form of aws_region if provided, else use empty string
-  short_region = lookup(local.region_short_map, var.region, "")
-
-
-  # Generate the full id with optional region short code
-  id = "${var.environment}-${var.project_id}${local.short_region != "" ? "-${local.short_region}" : ""}"
-
-  # Generate a random string if random is set to true
-  id_hash = var.hash_id ? md5(local.id) : ""
-
-
-  # Generate the resource_id with optional region short code
-  hashed_id = "${local.id}-${local.id_hash}"
-
-  # Genarate the resource id for s3 with optional region short code, and replace any non-alphanumeric characters with "-" while keeping the length to 63 characters
-
-  s3_safe_id = substr(replace(replace(lower("${local.id}-s3-${local.id_hash}"), "[^a-z0-9]", "-"), "-+", "-"), 0, 63)
-
-
-  # Generate tags
+  # Base tags: prioritize module inputs over context
   base_tags = {
-    "environment" = var.environment
-    "cost-center" = var.cost_center
-    "department"  = var.department
-    "project-id"  = var.project_id
+    cost_center = var.cost_center != "" ? var.cost_center : var.context.cost_center
+    environment = var.environment != "" ? var.environment : var.context.environment
+    project     = var.project != "" ? var.project : var.context.project
+    region      = module.short_region.short_region != "" ? module.short_region.short_region : var.context.region
   }
 
-  # Merge the base tags with additional tags
-  merged_tags = merge(local.base_tags, var.additional_tags)
+  # Merge the base tags with additional tags, prioritizing additional tags over context
+  merged_tags = merge(local.base_tags, var.additional_tags, var.context)
+
+  # Extract variables from the format string
+  formatted_values = [for part in split("-", var.format) : replace(part, "$", "")]
+
+  # Map the formatted values to their corresponding base tag values
+  mapped_values = [for key in local.formatted_values : lookup(local.base_tags, key, "")]
+
+  # Generate the base resource ID
+  base_resource_id = join("-", compact(local.mapped_values))
+
+  # Optionally append a hash for uniqueness
+  resource_id = var.enable_hash_id ? "${local.base_resource_id}-s3-${substr(md5(local.base_resource_id), 0, 6)}" : local.base_resource_id
+
+  # Generates an S3-safe resource ID by lowercasing, replacing invalid characters with hyphens, and truncating to 63 characters
+  s3_safe_id = substr(replace(replace(lower(local.resource_id), "[^a-z0-9]", "-"), "-+", "-"), 0, 63)
+
+  # Generate a map of resource IDs including base 'id' and service-specific IDs, applying s3_safe_id only to 's3'
+  resource_id_map = merge(
+    {
+      default = local.base_resource_id
+    },
+    {
+      for svc in var.services :
+      svc => (
+        # if service is 's3', use the s3_safe_id, otherwise use the base_resource_id
+        svc == "s3"
+        ? local.s3_safe_id
+        : "${local.base_resource_id}-${replace(svc, "_", "-")}"
+      )
+    }
+  )
 }
