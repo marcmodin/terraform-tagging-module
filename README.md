@@ -44,29 +44,28 @@ This Terraform module dynamically generates standardized tags for cloud resource
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_additional_tags"></a> [additional\_tags](#input\_additional\_tags) | Additional tags to be merged with the generated tags | `map(string)` | `{}` | no |
-| <a name="input_cost_center"></a> [cost\_center](#input\_cost\_center) | The cost center identifier (e.g., b-123, b-456) | `string` | n/a | yes |
-| <a name="input_department"></a> [department](#input\_department) | The department name (e.g., IT, HR, Finance) | `string` | n/a | yes |
-| <a name="input_environment"></a> [environment](#input\_environment) | The environment of the resource (e.g. development, staging, production) | `string` | n/a | yes |
-| <a name="input_hash_id"></a> [hash\_id](#input\_hash\_id) | Whether to include a random hash in the resource ID | `bool` | `false` | no |
-| <a name="input_project_id"></a> [project\_id](#input\_project\_id) | The project ID associated with the resource | `string` | n/a | yes |
+| <a name="input_context"></a> [context](#input\_context) | Contextual variables for nested modules. Expects a map of tags eg. `module.tags.tags` | `any` | `{}` | no |
+| <a name="input_cost_center"></a> [cost\_center](#input\_cost\_center) | The cost center identifier (e.g., sb-123, sb-456, sb-789) | `string` | `""` | no |
+| <a name="input_enable_hash_id"></a> [enable\_hash\_id](#input\_enable\_hash\_id) | Whether to generate a unique resource ID. Useful for globally unique names required for S3 buckets | `bool` | `false` | no |
+| <a name="input_environment"></a> [environment](#input\_environment) | The environment of the resource (e.g., dev, tst, stg, qa, prd) | `string` | `""` | no |
+| <a name="input_format"></a> [format](#input\_format) | The format of the resource ID (e.g., '$cost\_center-$environment-$region-$project') | `string` | `"$cost_center-$environment-$region-$project"` | no |
+| <a name="input_project"></a> [project](#input\_project) | The abbreviated project name associated with the resource | `string` | `""` | no |
 | <a name="input_region"></a> [region](#input\_region) | Optional AWS region to include in the resource ID, limited to EU and US regions | `string` | `""` | no |
-
+| <a name="input_services"></a> [services](#input\_services) | List of AWS services to include in the resource IDs | `list(string)` | `[]` | no |
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | <a name="output_additional_tags"></a> [additional\_tags](#output\_additional\_tags) | The additional tags to be merged with the generated tags |
-| <a name="output_merged_tags"></a> [merged\_tags](#output\_merged\_tags) | The merged tags map to be applied to resources |
-| <a name="output_resource_id"></a> [resource\_id](#output\_resource\_id) | The generated resource ID based on environment and project ID |
-| <a name="output_resource_id_with_hash"></a> [resource\_id\_with\_hash](#output\_resource\_id\_with\_hash) | The generated resource ID with hash based on environment and project ID |
-| <a name="output_s3_resource_id"></a> [s3\_resource\_id](#output\_s3\_resource\_id) | The generated resource ID for S3 based on environment and project ID |
-| <a name="output_tags"></a> [tags](#output\_tags) | The tags map to be applied to resources |
+| <a name="output_context"></a> [context](#output\_context) | The context of the resource. Useful for troubleshooting and debugging |
+| <a name="output_resource_id"></a> [resource\_id](#output\_resource\_id) | The generated resource ID based on the specified format |
+| <a name="output_resource_ids"></a> [resource\_ids](#output\_resource\_ids) | A map of resource IDs including the base ID and service-specific IDs |
+| <a name="output_tags"></a> [tags](#output\_tags) | The combined tags to be applied to resources |
 <!-- END_TF_DOCS -->
 
 ---
